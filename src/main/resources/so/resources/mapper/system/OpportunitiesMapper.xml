@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.bootdo.system.so.java.system.dao.OpportunitiesDao">
+
+	<select id="get" resultType="com.bootdo.system.domain.OpportunitiesDO">
+		select `so_id`,`so_source`,`customer_name`,`probalility_success`,`outline`,`linkman`,`linkman_tel`,`describe`,`creator`,`create_time`,`so_status`,`appointed_time`,`customer_manager` from sales_opportunities where so_id = #{value}
+	</select>
+
+	<select id="list" resultType="com.bootdo.system.so.java.system.domain.OpportunitiesDO">
+		select `so_id`,`so_source`,`customer_name`,`probalility_success`,`outline`,`linkman`,`linkman_tel`,`describe`,`creator`,`create_time`,`so_status`,`appointed_time`,`customer_manager` from sales_opportunities
+        <where>  
+		  		  <if test="soId != null and soId != ''"> and so_id = #{soId} </if>
+		  		  <if test="soSource != null and soSource != ''"> and so_source = #{soSource} </if>
+		  		  <if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+		  		  <if test="probalilitySuccess != null and probalilitySuccess != ''"> and probalility_success = #{probalilitySuccess} </if>
+		  		  <if test="outline != null and outline != ''"> and outline = #{outline} </if>
+		  		  <if test="linkman != null and linkman != ''"> and linkman = #{linkman} </if>
+		  		  <if test="linkmanTel != null and linkmanTel != ''"> and linkman_tel = #{linkmanTel} </if>
+		  		  <if test="describe != null and describe != ''"> and describe = #{describe} </if>
+		  		  <if test="creator != null and creator != ''"> and creator = #{creator} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="soStatus != null and soStatus != ''"> and so_status = #{soStatus} </if>
+		  		  <if test="appointedTime != null and appointedTime != ''"> and appointed_time = #{appointedTime} </if>
+		  		  <if test="customerManager != null and customerManager != ''"> and customer_manager = #{customerManager} </if>
+		  		</where>
+        <choose>
+            <when test="sort != null and sort.trim() != ''">
+                order by ${sort} ${order}
+            </when>
+			<otherwise>
+                order by so_id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="count" resultType="int">
+		select count(*) from sales_opportunities
+		 <where>  
+		  		  <if test="soId != null and soId != ''"> and so_id = #{soId} </if>
+		  		  <if test="soSource != null and soSource != ''"> and so_source = #{soSource} </if>
+		  		  <if test="customerName != null and customerName != ''"> and customer_name = #{customerName} </if>
+		  		  <if test="probalilitySuccess != null and probalilitySuccess != ''"> and probalility_success = #{probalilitySuccess} </if>
+		  		  <if test="outline != null and outline != ''"> and outline = #{outline} </if>
+		  		  <if test="linkman != null and linkman != ''"> and linkman = #{linkman} </if>
+		  		  <if test="linkmanTel != null and linkmanTel != ''"> and linkman_tel = #{linkmanTel} </if>
+		  		  <if test="describe != null and describe != ''"> and describe = #{describe} </if>
+		  		  <if test="creator != null and creator != ''"> and creator = #{creator} </if>
+		  		  <if test="createTime != null and createTime != ''"> and create_time = #{createTime} </if>
+		  		  <if test="soStatus != null and soStatus != ''"> and so_status = #{soStatus} </if>
+		  		  <if test="appointedTime != null and appointedTime != ''"> and appointed_time = #{appointedTime} </if>
+		  		  <if test="customerManager != null and customerManager != ''"> and customer_manager = #{customerManager} </if>
+		  		</where>
+	</select>
+	 
+	<insert id="save" parameterType="com.bootdo.system.so.java.system.domain.OpportunitiesDO" useGeneratedKeys="true" keyProperty="soId">
+		insert into sales_opportunities
+		(
+			`so_source`, 
+			`customer_name`, 
+			`probalility_success`, 
+			`outline`, 
+			`linkman`, 
+			`linkman_tel`, 
+			`describe`, 
+			`creator`, 
+			`create_time`, 
+			`so_status`, 
+			`appointed_time`, 
+			`customer_manager`
+		)
+		values
+		(
+			#{soSource}, 
+			#{customerName}, 
+			#{probalilitySuccess}, 
+			#{outline}, 
+			#{linkman}, 
+			#{linkmanTel}, 
+			#{describe}, 
+			#{creator}, 
+			#{createTime}, 
+			#{soStatus}, 
+			#{appointedTime}, 
+			#{customerManager}
+		)
+	</insert>
+	 
+	<update id="update" parameterType="com.bootdo.system.so.java.system.domain.OpportunitiesDO">
+		update sales_opportunities 
+		<set>
+			<if test="soSource != null">`so_source` = #{soSource}, </if>
+			<if test="customerName != null">`customer_name` = #{customerName}, </if>
+			<if test="probalilitySuccess != null">`probalility_success` = #{probalilitySuccess}, </if>
+			<if test="outline != null">`outline` = #{outline}, </if>
+			<if test="linkman != null">`linkman` = #{linkman}, </if>
+			<if test="linkmanTel != null">`linkman_tel` = #{linkmanTel}, </if>
+			<if test="describe != null">`describe` = #{describe}, </if>
+			<if test="creator != null">`creator` = #{creator}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="soStatus != null">`so_status` = #{soStatus}, </if>
+			<if test="appointedTime != null">`appointed_time` = #{appointedTime}, </if>
+			<if test="customerManager != null">`customer_manager` = #{customerManager}</if>
+		</set>
+		where so_id = #{soId}
+	</update>
+	
+	<delete id="remove">
+		delete from sales_opportunities where so_id = #{value}
+	</delete>
+	
+	<delete id="batchRemove">
+		delete from sales_opportunities where so_id in 
+		<foreach item="soId" collection="array" open="(" separator="," close=")">
+			#{soId}
+		</foreach>
+	</delete>
+
+</mapper>
